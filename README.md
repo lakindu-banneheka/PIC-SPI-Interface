@@ -10,26 +10,22 @@ This library provides functions for using SPI (Serial Peripheral Interface) with
 - **Simple SPI Communication**: Provides functions for initializing SPI, sending data, and generating clock pulses.
 - **Port Data Transmission**: Includes a function to send data to a specific port via SPI.
 
-## Header File
+Example
+Here is a simple example of how to use the SPI library:
+#include "SPI_Lib.h"
 
-The library is defined in the `SPI_Lib.h` header file. It contains function prototypes and definitions for the SPI operations.
+sbit SCK_PIN at PORTB.B6;
+sbit SDI_PIN at PORTB.B7;
+sbit CS_PIN at PORTB.B5;
 
-### Header File: `SPI_Lib.h`
+void main() {
+    SPI_Initialize(&SCK_PIN, &SDI_PIN, &CS_PIN);
 
-```c
-#ifndef _SPI_LIB_H_
-#define _SPI_LIB_H_
-
-#include <stdint.h>
-#include "built_in.h"  // Assuming the built-in functions like Delay_us are declared here
-
-// Function Prototypes
-void SPI_Initialize(sbit *sckPin, sbit *sdiPin, sbit *csPin);
-void SPI_Clock_Pulse(sbit *sckPin);
-void SPI_Write(sbit *sckPin, sbit *sdiPin, uint8_t spiData);
-void SPI_WritePortData(sbit *sckPin, sbit *sdiPin, sbit *csPin, uint8_t address, uint8_t value);
-
-#endif // _SPI_LIB_H_
+    while (1) {
+        uint8_t portAValue = PORTA;  // Read value from PORTA
+        SPI_WritePortData(&SCK_PIN, &SDI_PIN, &CS_PIN, 0x11, portAValue);  // Send address 0x11 and data
+    }
+}
 
 
 Functions
@@ -65,53 +61,3 @@ sdiPin: Pointer to the SDI pin definition.
 csPin: Pointer to the CS pin definition.
 address: The address to be sent.
 value: The value to be sent.
-Usage
-Include the Header File:
-
-Add the following line to the top of your source file to include the SPI library:
-
-c
-Copy code
-#include "SPI_Lib.h"
-Define the SPI Pins:
-
-Define the sbit variables for the SPI pins in your main source file:
-
-c
-Copy code
-sbit SCK_PIN at PORTB.B6;
-sbit SDI_PIN at PORTB.B7;
-sbit CS_PIN at PORTB.B5;
-Initialize SPI:
-
-Call the SPI_Initialize function with the defined pins:
-
-c
-Copy code
-SPI_Initialize(&SCK_PIN, &SDI_PIN, &CS_PIN);
-Send Data via SPI:
-
-Use the SPI_WritePortData function to send data:
-
-c
-Copy code
-SPI_WritePortData(&SCK_PIN, &SDI_PIN, &CS_PIN, 0x11, portAValue);
-Example
-Here is a simple example of how to use the SPI library:
-
-c
-Copy code
-#include "SPI_Lib.h"
-
-sbit SCK_PIN at PORTB.B6;
-sbit SDI_PIN at PORTB.B7;
-sbit CS_PIN at PORTB.B5;
-
-void main() {
-    SPI_Initialize(&SCK_PIN, &SDI_PIN, &CS_PIN);
-
-    while (1) {
-        uint8_t portAValue = PORTA;  // Read value from PORTA
-        SPI_WritePortData(&SCK_PIN, &SDI_PIN, &CS_PIN, 0x11, portAValue);  // Send address 0x11 and data
-    }
-}
