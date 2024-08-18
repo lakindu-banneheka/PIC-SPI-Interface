@@ -12,6 +12,9 @@ This library provides functions for using SPI (Serial Peripheral Interface) with
 
 Example
 Here is a simple example of how to use the SPI library:
+
+c
+Copy code
 #include "SPI_Lib.h"
 
 sbit SCK_PIN at PORTB.B6;
@@ -26,7 +29,6 @@ void main() {
         SPI_WritePortData(&SCK_PIN, &SDI_PIN, &CS_PIN, 0x11, portAValue);  // Send address 0x11 and data
     }
 }
-
 
 Functions
 void SPI_Initialize(sbit *sckPin, sbit *sdiPin, sbit *csPin);
